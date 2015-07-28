@@ -4,11 +4,7 @@ minimal-image:
 	docker build -t jupyter/minimal common/
 
 demo-image: minimal-image
-	docker build -t jupyter/demo .
-
-upload: images
-	docker push jupyter/minimal
-	docker push jupyter/demo
+	docker build -t zsailer/demo .
 
 super-nuke: nuke
 	-docker rmi jupyter/minimal
