@@ -1,4 +1,4 @@
-Docker Images for Jupyter notebooks through tmpnb.
+Docker Images for Temporary Jupyter notebooks
 =================================================
 
 This is a simpler fork of Jupyter's repo, [docker-demo-images](https://github.com/jupyter/docker-demo-images), with a docker image that only includes IPython 2/3 kernels. Thus, it provides the boilerplate code for hosting temporary Jupyter notebooks on a server using Docker containers.
