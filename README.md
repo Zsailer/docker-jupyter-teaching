@@ -9,6 +9,17 @@ The docker files are forks of: [`jupyter/demo`](https://registry.hub.docker.com/
 
 The rest of the documentation is a direct copy of Jupyter's docker-demo-images documentation.
 
+###Docker proper
+Docker must be installed and the docker daemon running prior to building or hosting docker images.  On ubuntu:
+
+```
+sudo apt-get install docker docker.io
+sudo /etc/init.d/docker start
+```
+
+Also these images must be built and run using `sudo` by default.  To avoid this (again, on ubuntu).
+
+
 ### Organization
 
 The big demo image pulls in resources from
@@ -26,10 +37,10 @@ make images
 
 Alternatively, feel free to build them directly:
 
-#### `zsailer/demo`
+#### `teaching/demo`
 
 ```
-docker build -t zsailer/demo .
+docker build -t teaching/demo .
 ```
 
 #### `jupyter/minimal`
@@ -47,5 +58,7 @@ export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
 docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyter/configurable-http-proxy --default-target http://127.0.0.1:9999
 docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
            -v /var/run/docker.sock:/docker.sock \
-           jupyter/tmpnb python orchestrate.py --image='jupyter/demo' --command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
+           jupyter/tmpnb python orchestrate.py --image='teaching/demo' --command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
 ```
+
+This monster command can be run using `launcher.sh` in the base directory.
