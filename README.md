@@ -7,9 +7,7 @@ The primary purpose of this repository is to provide throw-away notebooks for de
 
 The docker files are forks of: [`jupyter/demo`](https://registry.hub.docker.com/u/jupyter/demo/) (currently used by [tmpnb.org](https://tmpnb.org)) and [`jupyter/minimal`](https://registry.hub.docker.com/u/jupyter/minimal/).
 
-The rest of the documentation is a direct copy of Jupyter's docker-demo-images documentation.
-
-###Docker proper
+###Setting up your environment
 Docker must be installed and the docker daemon running prior to building or hosting docker images.  On ubuntu:
 
 ```
@@ -17,15 +15,37 @@ sudo apt-get install docker docker.io
 sudo /etc/init.d/docker start
 ```
 
-Also these images must be built and run using `sudo` by default.  To avoid this (again, on ubuntu).
+Docker must be built and run using `sudo` by default.  To avoid this, add yourself to the `docker` group.  
 
+```
+sudo usermod -a -G docker USERNAME
+```
+
+You'll have to log in and log back out for this new group assignment to take effect.  
+
+###Quickstart
+
+####Build docker containers and start up.
+```
+make images #takes a loooooonnng time
+docker build -t teaching/exercises teaching/ # build the image with all ipython notebooks
+./launch-docker.sh # will take a loooonng time on the first run.  quick thereafter.
+```
+
+####Update ipython notebooks
+If you want to update or add new ipython notebooks, place them in the teaching/notebooks directory and then run:
+
+```
+nuke-docker.sh # stop/remove any existing docker containers
+build -t teaching/exercises teaching/
+./launch-docker.sh
+```
 
 ### Organization
 
-The big demo image pulls in resources from
+The core image pulls in resources from
 
-* `notebooks/` for example notebooks
-* `common/` for core components used by `minimal` and `demo`
+* `common/` for core components used by `minimal` and `core`
 
 ### Building the Docker Images
 
@@ -37,10 +57,10 @@ make images
 
 Alternatively, feel free to build them directly:
 
-#### `teaching/demo`
+#### `teaching/core`
 
 ```
-docker build -t teaching/demo .
+docker build -t teaching/core .
 ```
 
 #### `jupyter/minimal`
@@ -58,7 +78,7 @@ export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
 docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyter/configurable-http-proxy --default-target http://127.0.0.1:9999
 docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
            -v /var/run/docker.sock:/docker.sock \
-           jupyter/tmpnb python orchestrate.py --image='teaching/demo' --command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
+           jupyter/tmpnb python orchestrate.py --image='teaching/exercises' --command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
 ```
 
-This monster command can be run using `launcher.sh` in the base directory.
+This monster command can be run using `launch-docker.sh` in the base directory.

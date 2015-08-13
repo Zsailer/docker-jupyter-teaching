@@ -1,4 +1,4 @@
-FROM teaching/demo
+FROM teaching/core
 
 MAINTAINER Zach Sailer <zachsailer@gmail.com>
 

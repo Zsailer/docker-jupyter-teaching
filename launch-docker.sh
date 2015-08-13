@@ -1,5 +1,5 @@
 #!/bin/bash
-# launch an ipython3 notebook instance inside a docker instance
+# launch an ipython notebook instance inside a docker instance
 
 USAGE="bash launcher.sh"
 
