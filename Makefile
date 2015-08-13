@@ -1,4 +1,4 @@
-images: minimal-image core-image
+images: minimal-image core-image notebook-image
 
 minimal-image:
 	docker build -t jupyter/minimal common/
